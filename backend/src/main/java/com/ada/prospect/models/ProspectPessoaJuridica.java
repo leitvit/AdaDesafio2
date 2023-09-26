@@ -21,7 +21,11 @@ public class ProspectPessoaJuridica {
     private Long id;
 
     @NotBlank
-    @Size(max = 50)
+    @Size(
+            min = 1,
+            max = 50,
+            message = "Razão social deve conter até 50 caracteres."
+    )
     private String razaoSocial;
 
     @NotBlank
@@ -46,7 +50,7 @@ public class ProspectPessoaJuridica {
             regexp = RegexPatterns.NUMERICAL_STRING_PATTERN,
             message = "MCC deve ser composto apenas por números."
     )
-    private Integer merchantCategoryCode;
+    private String merchantCategoryCode;
 
     @NotBlank
     @Size(

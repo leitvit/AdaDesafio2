@@ -22,6 +22,7 @@ public class ProspectPessoaFisica {
 
     @NotBlank
     @Size(
+            min = 1,
             max = 50,
             message = "Nome deve conter até 50 caracteres."
     )
@@ -37,7 +38,7 @@ public class ProspectPessoaFisica {
             regexp = RegexPatterns.NUMERICAL_STRING_PATTERN,
             message = "MCC deve ser composto apenas por números."
     )
-    private Integer merchantCategoryCode;
+    private String merchantCategoryCode;
 
     @NotBlank
     @Size(
