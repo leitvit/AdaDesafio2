@@ -21,11 +21,11 @@ public class ProspectService {
 
     public String createPessoaFisica(ProspectPessoaFisica prospectPessoaFisica) {
         prospectPessoaFisicaRepository.save(prospectPessoaFisica);
-        return "ID: "+ prospectPessoaFisica.getId();
+        return String.valueOf(prospectPessoaFisica.getId());
     }
 
     public String createPessoaJuridica(ProspectPessoaJuridica prospectPessoaJuridica) {
         prospectPessoaJuridicaRepository.save(prospectPessoaJuridica);
-        return "ID: "+ prospectPessoaJuridica.getId();
+        return String.valueOf(prospectPessoaJuridica.getId());
     }
 }
