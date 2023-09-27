@@ -13,6 +13,10 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(
+        name = "PROSPECT_PESSOA_FISICA",
+        uniqueConstraints = @UniqueConstraint(columnNames={"merchant_category_code"})
+)
 public class ProspectPessoaFisica {
 
     @Id
@@ -29,6 +33,7 @@ public class ProspectPessoaFisica {
     @Size(min = 4,max = 4,message = "MCC deve conter 4 números.")
     @Pattern(regexp = RegexPatterns.NUMERICAL_STRING_PATTERN,message = "MCC deve ser composto apenas por números.")
     @Schema(example = "1234")
+    @Column(name = "merchant_category_code")
     private String merchantCategoryCode;
 
     @NotBlank

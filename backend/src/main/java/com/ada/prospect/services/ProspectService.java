@@ -20,12 +20,20 @@ public class ProspectService {
 
 
     public String createPessoaFisica(ProspectPessoaFisica prospectPessoaFisica) {
-        prospectPessoaFisicaRepository.save(prospectPessoaFisica);
-        return String.valueOf(prospectPessoaFisica.getId());
+        try {
+            prospectPessoaFisicaRepository.save(prospectPessoaFisica);
+            return String.valueOf(prospectPessoaFisica.getId());
+        } catch (Exception exception) {
+            return exception.getMessage();
+        }
     }
 
     public String createPessoaJuridica(ProspectPessoaJuridica prospectPessoaJuridica) {
-        prospectPessoaJuridicaRepository.save(prospectPessoaJuridica);
-        return String.valueOf(prospectPessoaJuridica.getId());
+        try {
+            prospectPessoaJuridicaRepository.save(prospectPessoaJuridica);
+            return String.valueOf(prospectPessoaJuridica.getId());
+        } catch (Exception exception) {
+            return exception.getMessage();
+        }
     }
 }

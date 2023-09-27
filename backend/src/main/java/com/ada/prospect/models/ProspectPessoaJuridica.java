@@ -3,10 +3,7 @@ package com.ada.prospect.models;
 import com.ada.prospect.utilities.RegexPatterns;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -16,6 +13,10 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(
+        name = "PROSPECT_PESSOA_FISICA",
+        uniqueConstraints = @UniqueConstraint(columnNames={"merchant_category_code"})
+)
 public class ProspectPessoaJuridica {
 
     @Id
@@ -37,6 +38,7 @@ public class ProspectPessoaJuridica {
     @Size(min = 4,max = 4,message = "MCC deve conter 4 números.")
     @Pattern(regexp = RegexPatterns.NUMERICAL_STRING_PATTERN, message = "MCC deve ser composto apenas por números.")
     @Schema(example = "1234")
+    @Column(name = "merchant_category_code", unique = true)
     private String merchantCategoryCode;
 
     @NotBlank
