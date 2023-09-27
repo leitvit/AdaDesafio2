@@ -18,5 +18,3 @@ prospects do tipo pessoa física e jurídica, implementando suas respectivas reg
 Foram também solicitadas regras de consistência nas operações de cadastro, consulta e alteração destes clientes.
 As regras foram implementadas na classe `services.ProspectService`. 
 
-Os testes unitários estão localizados em 
-

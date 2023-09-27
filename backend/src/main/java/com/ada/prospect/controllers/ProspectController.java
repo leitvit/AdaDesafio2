@@ -29,7 +29,8 @@ public class ProspectController {
             @ApiResponse(responseCode = "200", description = "Cliente criado com sucesso.")
     })
     public ResponseEntity<String> createProspectPessoaFisica(@RequestBody ProspectPessoaFisica prospectPessoaFisica) {
-        return prospectService.createPessoaFisica(prospectPessoaFisica);
+        String responseMessage = prospectService.createPessoaFisica(prospectPessoaFisica);
+        return ResponseEntity.ok().body(responseMessage);
     }
 
     @PostMapping(value = "createprospectpj", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -38,6 +39,7 @@ public class ProspectController {
             @ApiResponse(responseCode = "200", description = "Cliente criado com sucesso.")
     })
     public ResponseEntity<String> createProspectPessoaJuridica(@RequestBody ProspectPessoaJuridica prospectPessoaJuridica) {
-        return prospectService.createPessoaJuridica(prospectPessoaJuridica);
+        String responseMessage = prospectService.createPessoaJuridica(prospectPessoaJuridica);
+        return ResponseEntity.ok().body(responseMessage);
     }
 }
