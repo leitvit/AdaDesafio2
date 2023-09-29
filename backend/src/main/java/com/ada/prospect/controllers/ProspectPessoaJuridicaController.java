@@ -23,6 +23,7 @@ import java.util.List;
         @ApiResponse(responseCode = "400", description = "Requisição inválida."),
         @ApiResponse(responseCode = "500", description = "Erro interno do servidor."),
 })
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProspectPessoaJuridicaController {
 
     private final ProspectPessoaJuridicaService prospectPessoaJuridicaService;
