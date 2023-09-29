@@ -18,6 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/prospectpessoafisica/")
 @Tag(name = "Prospect Pessoa Fisica")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operação realizada com sucesso."),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida."),
+        @ApiResponse(responseCode = "500", description = "Erro interno do servidor."),
+})
 public class ProspectPessoaFisicaController {
 
     private final ProspectPessoaFisicaService prospectPessoaFisicaService;
@@ -33,9 +38,6 @@ public class ProspectPessoaFisicaController {
 
     @PostMapping(value = "createprospect", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Cria uma nova entrada de cliente Pessoa Física.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente criado com sucesso.")
-    })
     @Validated
     public ResponseEntity<String> createProspect(@RequestBody ProspectPessoaFisica prospectPessoaFisica) {
         return prospectPessoaFisicaService.create(prospectPessoaFisica);
@@ -59,11 +61,6 @@ public class ProspectPessoaFisicaController {
     @Operation(summary = "Altera um Prospect PF")
     @PutMapping(value = "entities/updatebyid/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Validated
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente criado com sucesso."),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida."),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor."),
-    })
     public ResponseEntity<String> updateProspect(
             @PathVariable Long id,
             @Valid @RequestBody ProspectPessoaFisica prospectPessoaFisica) {

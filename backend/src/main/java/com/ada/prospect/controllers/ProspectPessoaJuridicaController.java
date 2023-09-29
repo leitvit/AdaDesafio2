@@ -18,6 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/prospectpessoajuridica/")
 @Tag(name = "Prospect Pessoa Juridica")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operação realizada com sucesso."),
+        @ApiResponse(responseCode = "400", description = "Requisição inválida."),
+        @ApiResponse(responseCode = "500", description = "Erro interno do servidor."),
+})
 public class ProspectPessoaJuridicaController {
 
     private final ProspectPessoaJuridicaService prospectPessoaJuridicaService;
@@ -33,9 +38,6 @@ public class ProspectPessoaJuridicaController {
 
     @PostMapping(value = "createprospect", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Cria uma nova entrada de cliente Pessoa Jurídica.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente criado com sucesso.")
-    })
     @Validated
     public ResponseEntity<String> createProspect(@RequestBody ProspectPessoaJuridica prospectPessoaJuridica) {
         return prospectPessoaJuridicaService.createPessoaJuridica(prospectPessoaJuridica);
@@ -51,11 +53,6 @@ public class ProspectPessoaJuridicaController {
     @GetMapping(value = "entities/findbyid/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Busca e retorna o cliente cadastrado, se existir, através do id informado.")
     @Validated
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente criado com sucesso."),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida."),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor."),
-    })
     public ResponseEntity<?> findProspectById(@PathVariable("id") Long id) {
         return prospectPessoaJuridicaService.findProspect(id);
     }
@@ -63,11 +60,6 @@ public class ProspectPessoaJuridicaController {
     @Operation(summary = "Altera um Prospect PJ")
     @PutMapping(value = "entities/updatebyid/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Validated
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Cliente criado com sucesso."),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida."),
-            @ApiResponse(responseCode = "500", description = "Erro interno do servidor."),
-    })
     public ResponseEntity<String> updateProspect(
             @PathVariable Long id,
             @Valid @RequestBody ProspectPessoaJuridica prospectPessoaJuridica) {
