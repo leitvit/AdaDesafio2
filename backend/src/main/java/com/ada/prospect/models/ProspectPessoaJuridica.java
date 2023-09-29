@@ -1,7 +1,6 @@
 package com.ada.prospect.models;
 
 import com.ada.prospect.utilities.RegexPatterns;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -13,19 +12,16 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(
         name = "PROSPECT_PESSOA_JURIDICA",
         uniqueConstraints = @UniqueConstraint(columnNames = {"merchant_category_code"})
 )
-public class ProspectPessoaJuridica {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private Long id;
+public class ProspectPessoaJuridica extends BaseProspect {
 
     @NotBlank
     @Size(min = 1, max = 50, message = "Razão social deve conter até 50 caracteres.")
+    @Schema(example = "Padaria Belos Sonhos")
     @Column(name = "razao_social")
     private String razaoSocial;
 
@@ -35,13 +31,6 @@ public class ProspectPessoaJuridica {
     @Schema(example = "12345678000110")
     @Column(name = "cnpj")
     private String cnpj;
-
-    @NotBlank
-    @Size(min = 4, max = 4, message = "MCC deve conter 4 números.")
-    @Pattern(regexp = RegexPatterns.NUMERICAL_STRING_PATTERN, message = "MCC deve ser composto apenas por números.")
-    @Schema(example = "1234")
-    @Column(name = "merchant_category_code", unique = true)
-    private String merchantCategoryCode;
 
     @NotBlank
     @Size(max = 50, message = "Nome deve conter até 50 caracteres.")
@@ -55,10 +44,4 @@ public class ProspectPessoaJuridica {
     @Schema(example = "12345678900")
     @Column(name = "cpf_contato")
     private String cpfContato;
-
-    @NotBlank
-    @Pattern(regexp = RegexPatterns.EMAIL_VALIDATION_PATTERN, message = "Informe um email válido.")
-    @Schema(example = "joaquim.bezerra@aol.com.br")
-    @Column(name = "email")
-    private String email;
 }

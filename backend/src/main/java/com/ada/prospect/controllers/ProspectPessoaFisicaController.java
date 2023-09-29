@@ -64,6 +64,6 @@ public class ProspectPessoaFisicaController {
     public ResponseEntity<String> updateProspect(
             @PathVariable Long id,
             @Valid @RequestBody ProspectPessoaFisica prospectPessoaFisica) {
-        return prospectPessoaFisicaService.updateProspect(id, prospectPessoaFisica);
+        return prospectPessoaFisicaService.update(id, prospectPessoaFisica);
     }
 }

@@ -40,7 +40,7 @@ public class ProspectPessoaJuridicaController {
     @Operation(summary = "Cria uma nova entrada de cliente Pessoa Jurídica.")
     @Validated
     public ResponseEntity<String> createProspect(@RequestBody ProspectPessoaJuridica prospectPessoaJuridica) {
-        return prospectPessoaJuridicaService.createPessoaJuridica(prospectPessoaJuridica);
+        return prospectPessoaJuridicaService.create(prospectPessoaJuridica);
     }
 
     @GetMapping(value = "entities/findall", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,7 +54,7 @@ public class ProspectPessoaJuridicaController {
     @Operation(summary = "Busca e retorna o cliente cadastrado, se existir, através do id informado.")
     @Validated
     public ResponseEntity<?> findProspectById(@PathVariable("id") Long id) {
-        return prospectPessoaJuridicaService.findProspect(id);
+        return prospectPessoaJuridicaService.findById(id);
     }
 
     @Operation(summary = "Altera um Prospect PJ")
@@ -63,6 +63,6 @@ public class ProspectPessoaJuridicaController {
     public ResponseEntity<String> updateProspect(
             @PathVariable Long id,
             @Valid @RequestBody ProspectPessoaJuridica prospectPessoaJuridica) {
-        return prospectPessoaJuridicaService.updateProspect(id, prospectPessoaJuridica);
+        return prospectPessoaJuridicaService.update(id, prospectPessoaJuridica);
     }
 }

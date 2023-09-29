@@ -10,34 +10,38 @@ import java.util.Optional;
 @Service
 public class ProspectPessoaFisicaService {
 
-    private final ProspectPessoaFisicaRepository prospectPessoaFisicaRepository;
+    private final ProspectPessoaFisicaRepository prospectRepository;
+    private final QueueService queueService;
 
-    public ProspectPessoaFisicaService(ProspectPessoaFisicaRepository prospectPessoaFisicaRepository) {
-        this.prospectPessoaFisicaRepository = prospectPessoaFisicaRepository;
+    public ProspectPessoaFisicaService(ProspectPessoaFisicaRepository prospectRepository, QueueService queueService) {
+        this.prospectRepository = prospectRepository;
+        this.queueService = queueService;
     }
 
 
     public ResponseEntity<String> create(ProspectPessoaFisica prospectPessoaFisica) {
         try {
-            prospectPessoaFisicaRepository.save(prospectPessoaFisica);
+            prospectRepository.save(prospectPessoaFisica);
             Long id = prospectPessoaFisica.getId();
+            queueService.addQueueItem(prospectPessoaFisica);
             return ResponseEntity.ok().body(String.valueOf(id));
         } catch (Exception exception) {
             return ResponseEntity.badRequest().body(exception.getMessage());
         }
     }
 
-    public ResponseEntity<String> updateProspect(Long id, ProspectPessoaFisica prospect) {
-        Optional<ProspectPessoaFisica> existingRecord = prospectPessoaFisicaRepository.findById(id);
+    public ResponseEntity<String> update(Long id, ProspectPessoaFisica prospectUpdate) {
+        Optional<ProspectPessoaFisica> existingRecord = prospectRepository.findById(id);
         if (existingRecord.isPresent()) {
-            prospectPessoaFisicaRepository.findById(id).map(record -> {
-                record.setCpf(prospect.getCpf());
-                record.setEmail(prospect.getEmail());
-                record.setMerchantCategoryCode(prospect.getMerchantCategoryCode());
-                record.setNome(prospect.getNome());
-                ProspectPessoaFisica updated = prospectPessoaFisicaRepository.save(record);
-                return ResponseEntity.ok().body(updated);
-            });
+            ProspectPessoaFisica updatedProspect = existingRecord.map(record -> {
+                record.setCpf(prospectUpdate.getCpf());
+                record.setEmail(prospectUpdate.getEmail());
+                record.setMerchantCategoryCode(prospectUpdate.getMerchantCategoryCode());
+                record.setNome(prospectUpdate.getNome());
+                return prospectRepository.save(record);
+            }).orElse(null);
+            queueService.addQueueItem(updatedProspect);
+
             return ResponseEntity.ok().body("Alteração concluída.");
         } else {
             return ResponseEntity.badRequest().body("ID não encontrado.");
@@ -45,9 +49,9 @@ public class ProspectPessoaFisicaService {
     }
 
     public ResponseEntity<?> findById(Long id) {
-        Optional<ProspectPessoaFisica> existingRecord = prospectPessoaFisicaRepository.findById(id);
+        Optional<ProspectPessoaFisica> existingRecord = prospectRepository.findById(id);
         if (existingRecord.isPresent()) {
-            return ResponseEntity.ok().body(prospectPessoaFisicaRepository.findById(id));
+            return ResponseEntity.ok().body(prospectRepository.findById(id));
         } else {
             return ResponseEntity.badRequest().body("ID não encontrado");
         }

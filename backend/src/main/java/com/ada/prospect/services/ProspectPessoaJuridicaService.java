@@ -10,46 +10,50 @@ import java.util.Optional;
 @Service
 public class ProspectPessoaJuridicaService {
 
-    private final ProspectPessoaJuridicaRepository prospectPessoaJuridicaRepository;
+    private final ProspectPessoaJuridicaRepository prospectRepository;
+    private final QueueService queueService;
 
-    public ProspectPessoaJuridicaService(ProspectPessoaJuridicaRepository prospectPessoaJuridicaRepository) {
-        this.prospectPessoaJuridicaRepository = prospectPessoaJuridicaRepository;
+    public ProspectPessoaJuridicaService(ProspectPessoaJuridicaRepository prospectRepository, QueueService queueService) {
+        this.prospectRepository = prospectRepository;
+        this.queueService = queueService;
     }
 
-    public ResponseEntity<String> createPessoaJuridica(ProspectPessoaJuridica prospectPessoaJuridica) {
+    public ResponseEntity<String> create(ProspectPessoaJuridica prospectPessoaJuridica) {
         try {
-            prospectPessoaJuridicaRepository.save(prospectPessoaJuridica);
+            prospectRepository.save(prospectPessoaJuridica);
             Long id = prospectPessoaJuridica.getId();
+            queueService.addQueueItem(prospectPessoaJuridica);
             return ResponseEntity.ok().body(String.valueOf(id));
         } catch (Exception exception) {
             return ResponseEntity.badRequest().body(exception.getMessage());
         }
     }
 
-
-    public ResponseEntity<String> updateProspect(Long id, ProspectPessoaJuridica updatedProspect) {
-        Optional<ProspectPessoaJuridica> existingRecord = prospectPessoaJuridicaRepository.findById(id);
+    public ResponseEntity<String> update(Long id, ProspectPessoaJuridica prospectUpdate) {
+        Optional<ProspectPessoaJuridica> existingRecord = prospectRepository.findById(id);
         if (existingRecord.isPresent()) {
-            prospectPessoaJuridicaRepository.findById(id).map(record -> {
-                record.setCnpj(updatedProspect.getCnpj());
-                record.setEmail(updatedProspect.getEmail());
-                record.setCpfContato(updatedProspect.getCpfContato());
-                record.setNomeContato(updatedProspect.getNomeContato());
-                record.setRazaoSocial(updatedProspect.getRazaoSocial());
-                record.setMerchantCategoryCode(updatedProspect.getMerchantCategoryCode());
-                ProspectPessoaJuridica updated = prospectPessoaJuridicaRepository.save(record);
-                return ResponseEntity.ok().body(updated);
-            });
+            ProspectPessoaJuridica updatedProspect= prospectRepository.findById(id).map(record -> {
+                record.setCnpj(prospectUpdate.getCnpj());
+                record.setEmail(prospectUpdate.getEmail());
+                record.setCpfContato(prospectUpdate.getCpfContato());
+                record.setNomeContato(prospectUpdate.getNomeContato());
+                record.setRazaoSocial(prospectUpdate.getRazaoSocial());
+                record.setMerchantCategoryCode(prospectUpdate.getMerchantCategoryCode());
+                return prospectRepository.save(record);
+            }).orElse(null);
+            // Add to queue
+            queueService.addQueueItem(updatedProspect);
+
             return ResponseEntity.ok().body("Alteração concluída.");
         } else {
             return ResponseEntity.badRequest().body("ID não encontrado.");
         }
     }
 
-    public ResponseEntity<?> findProspect(Long id) {
-        Optional<ProspectPessoaJuridica> existingRecord = prospectPessoaJuridicaRepository.findById(id);
+    public ResponseEntity<?> findById(Long id) {
+        Optional<ProspectPessoaJuridica> existingRecord = prospectRepository.findById(id);
         if (existingRecord.isPresent()) {
-            return ResponseEntity.ok().body(prospectPessoaJuridicaRepository.findById(id));
+            return ResponseEntity.ok().body(prospectRepository.findById(id));
         } else {
             return ResponseEntity.badRequest().body("ID não encontrado");
         }
